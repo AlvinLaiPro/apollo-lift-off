@@ -1,17 +1,37 @@
 import React from 'react';
+import { Link } from '@reach/router';
+import { gql, useMutation } from '@apollo/client';
 import styled from '@emotion/styled';
 import { colors, mq } from '../styles';
 import { humanReadableTimeFromSeconds } from '../utils/helpers';
+
+const INCREMENT_TRACK_VIEWS = gql`
+  mutation IncrementTrackViews($incrementTrackViewsId: ID!) {
+    incrementTrackViews(id: $incrementTrackViewsId) {
+      code
+      success
+      message
+      track {
+        id
+        numberOfViews
+      }
+    }
+  }
+`;
 
 /**
  * Track Card component renders basic info in a card format
  * for each track populating the tracks grid homepage.
  */
 const TrackCard = ({ track }) => {
-  const { title, thumbnail, author, length, modulesCount } = track;
+  const { id, title, thumbnail, author, length, modulesCount } = track;
+  const [incrementTrackViews] = useMutation(INCREMENT_TRACK_VIEWS, {
+    variables: {incrementTrackViewsId: id},
+    onCompleted: console.log,
+  });
 
   return (
-    <CardContainer>
+    <CardContainer to={`track/${id}`} onClick={incrementTrackViews}>
       <CardContent>
         <CardImageContainer>
           <CardImage src={thumbnail} alt={title} />
@@ -37,7 +57,7 @@ const TrackCard = ({ track }) => {
 export default TrackCard;
 
 /** Track Card styled components */
-const CardContainer = styled.div({
+const CardContainer = styled(Link)({
   borderRadius: 6,
   color: colors.text,
   backgroundSize: 'cover',
