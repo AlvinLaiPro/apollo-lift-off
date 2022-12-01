@@ -7,7 +7,8 @@ const typeDefs = gql`
         title: String!
         author: Author!
         thumbnail: String
-        length: Int
+        length: Int @deprecated(reason: "Use durationInSeconds")
+        durationInSeconds: Int
         modulesCount: Int
         numberOfViews: Int
         description: String
@@ -24,7 +25,8 @@ const typeDefs = gql`
     type Module {
         id: ID!
         title: String!
-        length: Int
+        length: Int @deprecated(reason: "Use durationInSeconds")
+        durationInSeconds: Int
     }
 
     type Query {
