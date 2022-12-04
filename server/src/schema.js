@@ -27,12 +27,15 @@ const typeDefs = gql`
         title: String!
         length: Int @deprecated(reason: "Use durationInSeconds")
         durationInSeconds: Int
+        videoUrl: String!
+        content: String
     }
 
     type Query {
         "Get tracks array for homepage grid"
         tracksForHome: [Track!]!
         track(id: ID!): Track
+        module: Module
     }
 
     type Mutation {
